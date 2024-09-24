@@ -20,20 +20,25 @@ public class GeneralDiscount implements Discount {
         if (condition.isApplicable(product)) {
             discount = calculator.calculateDiscount(product);
         }
-        if(nextDiscount != null) {
-            discount += nextDiscount.applyDiscount(product);
-        }
+
+        discount += nextDiscount.applyDiscount(product);
         return discount;
     }
 
     @Override
     public String getDescription(Product product) {
-        if (condition.isApplicable(product) && nextDiscount == null) {
-            return description;
-        } else if(condition.isApplicable(product) && nextDiscount != null) {
-            return description + " + " + nextDiscount.getDescription(product);
+        String appliedDescription = "";
+        if (condition.isApplicable(product)) {
+            appliedDescription = description;
         }
-        return "";
-    }
 
+        String nextDescription = nextDiscount.getDescription(product);
+        if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {
+            appliedDescription += " + " + nextDescription;
+        } else if (!nextDescription.isEmpty()) {
+            appliedDescription = nextDescription;
+        }
+
+        return appliedDescription;
+    }
 }

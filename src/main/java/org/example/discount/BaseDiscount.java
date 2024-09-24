@@ -18,14 +18,12 @@ public abstract class BaseDiscount implements Discount{
             appliedDescription = description;
         }
 
-        if (nextDiscount != null) {
-            String nextDescription = nextDiscount.getDescription(product);
+        String nextDescription = nextDiscount.getDescription(product);
 
-            if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {
-                appliedDescription += " + " + nextDescription;
-            } else if (!nextDescription.isEmpty()) {
-                appliedDescription = nextDescription;
-            }
+        if (!appliedDescription.isEmpty() && !nextDescription.isEmpty()) {
+            appliedDescription += " + " + nextDescription;
+        } else if (!nextDescription.isEmpty()) {
+            appliedDescription = nextDescription;
         }
 
         return appliedDescription;
@@ -37,10 +35,7 @@ public abstract class BaseDiscount implements Discount{
         if (isApplicable(product)) {
             discount = calculateDiscount(product);
         }
-
-        if (nextDiscount != null) {
-            discount += nextDiscount.applyDiscount(product);
-        }
+        discount += nextDiscount.applyDiscount(product);
 
         return discount;
     }
